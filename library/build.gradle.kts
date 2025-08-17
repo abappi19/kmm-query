@@ -13,6 +13,13 @@ version = "1.0.0"
 
 kotlin {
     jvm()
+    @OptIn(org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class)
+    wasmJs {
+        browser()
+        // ...
+        binaries.executable()
+    }
+
     androidTarget {
         publishLibraryVariants("release")
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
@@ -31,6 +38,12 @@ kotlin {
                 //put your multiplatform dependencies here
             }
         }
+        val wasmJsMain by getting {
+            dependencies {
+                // Wasm-specific dependencies
+            }
+        }
+
         val commonTest by getting {
             dependencies {
                 implementation(libs.kotlin.test)
