@@ -15,5 +15,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "kmm-query"
 include(":library")
-include(":kmp-sample")
-include(":kmp-sample:composeApp")

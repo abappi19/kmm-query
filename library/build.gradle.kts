@@ -15,7 +15,14 @@ kotlin {
     jvm()
     @OptIn(org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class)
     wasmJs {
-        browser()
+        browser{
+            testTask {
+                useKarma {
+                    useSafari()
+                }
+            }
+        }
+
         // ...
         binaries.executable()
     }

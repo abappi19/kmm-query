@@ -1,4 +1,5 @@
-package io.github.kotlin.fibonacci
+
+package io.github.abappi19.kmm_query
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
