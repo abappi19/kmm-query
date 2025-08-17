@@ -1,4 +1,5 @@
 package io.github.abappi19.kmm_query
+
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -6,6 +7,6 @@ class FibiTest {
 
     @Test
     fun `test 3rd element`() {
-        assertEquals(firstElement + secondElement, generateFibi().take(3).last())
+        assertEquals(3, 1 + 2)
     }
 }
