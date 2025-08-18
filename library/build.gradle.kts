@@ -49,6 +49,11 @@ kotlin {
                 implementation(libs.kotlinx.serialization.core)
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.google.gson)
+
+                // Crypto hash
+                implementation(project.dependencies.platform("org.kotlincrypto.hash:bom:0.7.0"))
+                implementation(libs.hash.md)
+
             }
         }
         val wasmJsMain by getting {
@@ -80,7 +85,7 @@ android {
 mavenPublishing {
     publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
 
-//    signAllPublications()
+    signAllPublications()
 
     coordinates(group.toString(), "kmm_query", version.toString())
 
