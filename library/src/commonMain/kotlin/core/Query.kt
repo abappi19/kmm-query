@@ -16,16 +16,56 @@ import kotlin.time.ExperimentalTime
 import kotlin.time.times
 
 
+/**
+ * Defines a reactive query interface for managing asynchronous data fetching with caching strategies.
+ * 
+ * @param T The type of data being queried, must be serializable for caching
+ */
 interface Query<T> {
+    /**
+     * Force a refresh of the data, bypassing any caching logic
+     */
     fun refresh(): Unit
+
+    /**
+     * Mark the data as stale and trigger a background refresh
+     */
     fun invalidate(): Unit
+
+    /**
+     * Observable stream of query results
+     */
     val data: StateFlow<T?>
+
+    /**
+     * Observable stream of query errors
+     */
     val error: StateFlow<Throwable?>
+
+    /**
+     * Loading state indicator (true during initial fetch)
+     */
     val isLoading: StateFlow<Boolean>
+
+    /**
+     * Refreshing state indicator (true during manual refreshes)
+     */
     val isRefreshing: StateFlow<Boolean>
 }
 
-
+/**
+ * Creates a managed query instance with caching and retry logic.
+ * 
+ * @param key Unique identifier for the query (used for caching)
+ * @param fetcher Async function to fetch fresh data
+ * @param cacheTimeMillis Duration to keep data in cache (0 = no caching)
+ * @param staleTimeMillis Duration before considering cached data stale
+ * @param retryCount Number of automatic retry attempts on failure
+ * @param cacheMode Strategy for cache/network interaction
+ * @param enabled Control whether the query enabled or not
+ * 
+ * @return Configured Query instance managing the data lifecycle
+ */
 @OptIn(ExperimentalTime::class)
 inline fun <reified T : @Serializable Any> QueryManager.useQuery(
     key: List<Any?>,
