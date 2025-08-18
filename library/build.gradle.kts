@@ -65,6 +65,7 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 implementation(libs.kotlin.test)
+                implementation(libs.kotlinx.coroutines.test)
             }
         }
     }
@@ -91,7 +92,8 @@ mavenPublishing {
 
     pom {
         name = "KMM Query"
-        description = "KMM Query is a query library that with lot of options."
+        description = "A powerful data fetching and caching library for Kotlin Multiplatform, built for speed, simplicity, and reliability."
+        //The missing query & caching solution for Kotlin Multiplatform. Fetch, cache, and persist data seamlessly across platforms.
         inceptionYear = "2025"
         url = "https://github.com/abappi19/kmm-query/"
         licenses {

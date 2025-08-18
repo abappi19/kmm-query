@@ -43,3 +43,4 @@ class DefaultQueryPersistor : QueryPersistor {
         cache.clear()
     }
 }
+
