@@ -6,6 +6,8 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.vanniktech.mavenPublish)
+    alias(libs.plugins.kotlin.serialization)
+    id("maven-publish")
 }
 
 group = "io.github.abappi19"
@@ -43,6 +45,15 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 //put your multiplatform dependencies here
+                implementation(libs.kotlinx.coroutines.core)
+                implementation(libs.kotlinx.serialization.core)
+                implementation(libs.kotlinx.serialization.json)
+                implementation(libs.google.gson)
+
+                // Crypto hash
+                implementation(project.dependencies.platform("org.kotlincrypto.hash:bom:0.7.0"))
+                implementation(libs.hash.md)
+
             }
         }
         val wasmJsMain by getting {
@@ -54,13 +65,14 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 implementation(libs.kotlin.test)
+                implementation(libs.kotlinx.coroutines.test)
             }
         }
     }
 }
 
 android {
-    namespace = "io.github.abappi19.kmm_query"
+    namespace = "io.github.abappi19.kmp_query"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
@@ -76,13 +88,14 @@ mavenPublishing {
 
     signAllPublications()
 
-    coordinates(group.toString(), "kmm_query", version.toString())
+    coordinates(group.toString(), "kmp_query", version.toString())
 
     pom {
-        name = "KMM Query"
-        description = "KMM Query is a query library that with lot of options."
+        name = "KMP Query"
+        description = "A powerful data fetching and caching library for Kotlin Multiplatform, built for speed, simplicity, and reliability."
+        //The missing query & caching solution for Kotlin Multiplatform. Fetch, cache, and persist data seamlessly across platforms.
         inceptionYear = "2025"
-        url = "https://github.com/abappi19/kmm-query/"
+        url = "https://github.com/abappi19/kmp_query/"
         licenses {
             license {
                 name = "The Apache License, Version 2.0"
@@ -98,9 +111,9 @@ mavenPublishing {
             }
         }
         scm {
-            url = "https://github.com/abappi19/kmm-query/"
-            connection = "scm:git:git://github.com/abappi19/kmm-query.git"
-            developerConnection = "scm:git:ssh://git@github.com/abappi19/kmm-query.git"
+            url = "https://github.com/abappi19/kmp_query/"
+            connection = "scm:git:git://github.com/abappi19/kmp_query.git"
+            developerConnection = "scm:git:ssh://git@github.com/abappi19/kmp_query.git"
         }
     }
 }

@@ -1,16 +1,9 @@
-package io.github.abappi19.kmm_query
+package io.github.abappi19.kmp_query
 
-fun generateFibi() = sequence {
-    var a = firstElement
-    yield(a)
-    var b = secondElement
-    yield(b)
-    while (true) {
-        val c = a + b
-        yield(c)
-        a = b
-        b = c
-    }
+import io.github.abappi19.kmp_query.core.QueryClient
+
+fun generateFibi() {
+    val a = QueryClient()
 }
 
 expect val firstElement: Int

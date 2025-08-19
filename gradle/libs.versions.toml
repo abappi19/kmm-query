@@ -3,10 +3,26 @@ agp = "8.12.0"
 kotlin = "2.2.10"
 android-minSdk = "24"
 android-compileSdk = "36"
+kotlinxCoroutinesCore = "1.10.2"
+kotlinxDatetime = "0.7.1"
+kotlinxSerializationCore = "1.9.0"
+gson = "2.13.1"
+kotlincrypto-version = " 0.7.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesCore" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
+kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinxSerializationCore" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationCore" }
+google-gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+hash-md = { module = "org.kotlincrypto.hash:md", version.ref = "kotlincrypto-version"}
+
 [plugins]
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 vanniktech-mavenPublish = { id = "com.vanniktech.maven.publish", version = "0.29.0" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+
+
