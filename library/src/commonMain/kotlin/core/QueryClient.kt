@@ -1,11 +1,11 @@
-package io.github.abappi19.kmm_query.core
+package io.github.abappi19.kmp_query.core
 
-import io.github.abappi19.kmm_query.cache.DefaultQueryPersistor
+import io.github.abappi19.kmp_query.cache.DefaultQueryPersistor
 import kotlin.time.ExperimentalTime
 
 
 @OptIn(ExperimentalTime::class)
-class QueryManager(
+class QueryClient(
     val queryManagerConfig: QueryManagerConfig = QueryManagerConfig(
         cacheTimeMillis = 0,
         staleTimeMillis = 0,

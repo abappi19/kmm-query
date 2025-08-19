@@ -1,8 +1,8 @@
-package io.github.abappi19.kmm_query
+package io.github.abappi19.kmp_query
 
-import io.github.abappi19.kmm_query.core.CacheMode
-import io.github.abappi19.kmm_query.core.QueryManager
-import io.github.abappi19.kmm_query.core.useQuery
+import io.github.abappi19.kmp_query.core.CacheMode
+import io.github.abappi19.kmp_query.core.QueryClient
+import io.github.abappi19.kmp_query.core.useQuery
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
@@ -15,7 +15,7 @@ import kotlin.time.Duration.Companion.seconds
 
 class CacheFirstModeTest {
 
-    val client = QueryManager()
+    val client = QueryClient()
 
     @Test
     fun `CACHE_FIRST - initial load`() = runTest {
@@ -28,7 +28,6 @@ class CacheFirstModeTest {
             },
             cacheMode = CacheMode.CACHE_FIRST
         )
-
 
         val result = query.data.first{ it != null }
 

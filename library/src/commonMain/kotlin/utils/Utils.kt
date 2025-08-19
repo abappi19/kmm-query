@@ -1,4 +1,4 @@
-package io.github.abappi19.kmm_query.utils
+package io.github.abappi19.kmp_query.utils
 
 import kotlinx.coroutines.delay
 import org.kotlincrypto.hash.md.MD5

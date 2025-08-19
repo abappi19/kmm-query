@@ -72,7 +72,7 @@ kotlin {
 }
 
 android {
-    namespace = "io.github.abappi19.kmm_query"
+    namespace = "io.github.abappi19.kmp_query"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
@@ -88,14 +88,14 @@ mavenPublishing {
 
     signAllPublications()
 
-    coordinates(group.toString(), "kmm_query", version.toString())
+    coordinates(group.toString(), "kmp_query", version.toString())
 
     pom {
-        name = "KMM Query"
+        name = "KMP Query"
         description = "A powerful data fetching and caching library for Kotlin Multiplatform, built for speed, simplicity, and reliability."
         //The missing query & caching solution for Kotlin Multiplatform. Fetch, cache, and persist data seamlessly across platforms.
         inceptionYear = "2025"
-        url = "https://github.com/abappi19/kmm-query/"
+        url = "https://github.com/abappi19/kmp_query/"
         licenses {
             license {
                 name = "The Apache License, Version 2.0"
@@ -111,9 +111,9 @@ mavenPublishing {
             }
         }
         scm {
-            url = "https://github.com/abappi19/kmm-query/"
-            connection = "scm:git:git://github.com/abappi19/kmm-query.git"
-            developerConnection = "scm:git:ssh://git@github.com/abappi19/kmm-query.git"
+            url = "https://github.com/abappi19/kmp_query/"
+            connection = "scm:git:git://github.com/abappi19/kmp_query.git"
+            developerConnection = "scm:git:ssh://git@github.com/abappi19/kmp_query.git"
         }
     }
 }

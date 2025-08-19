@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "kmm-query"
+rootProject.name = "kmp_query"
 include(":library")
