@@ -24,7 +24,7 @@ class NetworkOnlyModeTest {
         val query = client.useQuery(
             key = listOf("test"),
             fetcher = fetcher@{
-                delay(100.milliseconds)
+                
                 "Hello World"
             },
             cacheMode = CacheMode.NETWORK_ONLY
@@ -56,7 +56,7 @@ class NetworkOnlyModeTest {
         val query = client.useQuery(
             key = listOf("test"),
             fetcher = fetcher@{
-                delay(100.milliseconds)
+                
                 if (!isFirst.value) return@fetcher "Hello World 2"
 
                 isFirst.value = false
@@ -125,7 +125,7 @@ class NetworkOnlyModeTest {
         val query = client.useQuery(
             key = listOf("test"),
             fetcher = fetcher@{
-                delay(100.milliseconds)
+                
                 if (isFirst.value) {
                     isFirst.value = false
                     return@fetcher "Hello World"
@@ -152,6 +152,7 @@ class NetworkOnlyModeTest {
         query.refresh()
 
         query.isRefreshing.first { !it }
+        query.data.first { it == null }
 
         assertEquals(
             "query.data.value==null",

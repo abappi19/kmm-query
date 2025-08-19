@@ -22,7 +22,7 @@ class CacheOnlyModeTest {
         val query = client.useQuery(
             key = listOf("test"),
             fetcher = fetcher@{
-                delay(100.milliseconds)
+                
                 "Hello World"
             },
             cacheMode = CacheMode.CACHE_ONLY
@@ -54,7 +54,7 @@ class CacheOnlyModeTest {
         val query = client.useQuery(
             key = listOf("test"),
             fetcher = fetcher@{
-                delay(100.milliseconds)
+                
                 if (!isFirst.value) return@fetcher "Hello World 2"
 
                 isFirst.value = false
@@ -122,7 +122,7 @@ class CacheOnlyModeTest {
         val query = client.useQuery(
             key = listOf("test"),
             fetcher = fetcher@{
-                delay(100.milliseconds)
+                
                 if (isFirst.value) {
                     isFirst.value = false
                     return@fetcher "Hello World"
