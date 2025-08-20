@@ -1,8 +1,8 @@
-package io.github.abappi19.kmp_query
+package io.github.abappi19.kmpQuery
 
-import io.github.abappi19.kmp_query.core.CacheMode
-import io.github.abappi19.kmp_query.core.QueryClient
-import io.github.abappi19.kmp_query.core.useQuery
+import io.github.abappi19.kmpQuery.core.CacheMode
+import io.github.abappi19.kmpQuery.core.QueryClient
+import io.github.abappi19.kmpQuery.core.createQuery
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
@@ -18,7 +18,7 @@ class CacheFirstModeTest {
     @Test
     fun `CACHE_FIRST - initial load`() = runTest {
 
-        val query = client.useQuery(
+        val query = client.createQuery(
             key = listOf("test"),
             fetcher = fetcher@{
                 
@@ -49,7 +49,7 @@ class CacheFirstModeTest {
     @Test
     fun `CACHE_FIRST - refresh`() = runTest {
         var isFirst = MutableStateFlow(true)
-        val query = client.useQuery(
+        val query = client.createQuery(
             key = listOf("test"),
             fetcher = fetcher@{
                 
@@ -85,7 +85,7 @@ class CacheFirstModeTest {
     @Test
     fun `CACHE_FIRST - offline`() = runTest {
         var isFirst = MutableStateFlow(true)
-        val query = client.useQuery(
+        val query = client.createQuery(
             key = listOf("test"),
             fetcher = fetcher@{
                 throw Exception("No Internet")
@@ -122,7 +122,7 @@ class CacheFirstModeTest {
     @Test
     fun `CACHE_FIRST - unstableNetwork`() = runTest {
         var isFirst = MutableStateFlow(true)
-        val query = client.useQuery(
+        val query = client.createQuery(
             key = listOf("test"),
             fetcher = fetcher@{
                 
