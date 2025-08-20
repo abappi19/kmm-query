@@ -1,8 +1,8 @@
-package io.github.abappi19.kmp_query.core
+package io.github.abappi19.kmpQuery.core
 
-import io.github.abappi19.kmp_query.cache.getObject
-import io.github.abappi19.kmp_query.cache.setObject
-import io.github.abappi19.kmp_query.io.github.abappi19.kmp_query.utils.md5Hash
+import io.github.abappi19.kmpQuery.cache.getObject
+import io.github.abappi19.kmpQuery.cache.setObject
+import io.github.abappi19.kmpQuery.io.github.abappi19.kmp_query.utils.md5Hash
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -67,7 +67,7 @@ interface Query<T> {
  * @return Configured Query instance managing the data lifecycle
  */
 @OptIn(ExperimentalTime::class)
-inline fun <reified T : @Serializable Any> QueryClient.useQuery(
+inline fun <reified T : @Serializable Any> QueryClient.createQuery(
     key: List<Any?>,
     crossinline fetcher: suspend () -> T,
     cacheTimeMillis: Long = queryManagerConfig.cacheTimeMillis ?: 0,
@@ -218,3 +218,5 @@ inline fun <reified T : @Serializable Any> QueryClient.useQuery(
         override val isRefreshing = isRefreshing
     }
 }
+
+

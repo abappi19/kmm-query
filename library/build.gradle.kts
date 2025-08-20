@@ -1,9 +1,12 @@
 import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.lang.module.ModuleFinder.compose
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
+    alias(libs.plugins.composeMultiplatform)
+    alias(libs.plugins.composeCompiler)
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.vanniktech.mavenPublish)
     alias(libs.plugins.kotlin.serialization)
@@ -52,6 +55,9 @@ kotlin {
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.google.gson)
 
+                //composable
+                implementation(compose.runtime)
+
                 // Crypto hash
                 implementation(project.dependencies.platform("org.kotlincrypto.hash:bom:0.7.0"))
                 implementation(libs.hash.md)
@@ -74,7 +80,7 @@ kotlin {
 }
 
 android {
-    namespace = "io.github.abappi19.kmp_query"
+    namespace = "io.github.abappi19.kmpQuery"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
@@ -88,16 +94,16 @@ android {
 mavenPublishing {
     publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
 
-//    signAllPublications()
+    signAllPublications()
 
-    coordinates(group.toString(), "kmp_query", version.toString())
+    coordinates(group.toString(), "kmp-query", version.toString())
 
     pom {
         name = "KMP Query"
         description = "A powerful data fetching and caching library for Kotlin Multiplatform, built for speed, simplicity, and reliability."
         //The missing query & caching solution for Kotlin Multiplatform. Fetch, cache, and persist data seamlessly across platforms.
         inceptionYear = "2025"
-        url = "https://github.com/abappi19/kmp_query/"
+        url = "https://github.com/abappi19/kmp-query/"
         licenses {
             license {
                 name = "The Apache License, Version 2.0"
@@ -113,9 +119,9 @@ mavenPublishing {
             }
         }
         scm {
-            url = "https://github.com/abappi19/kmp_query/"
-            connection = "scm:git:git://github.com/abappi19/kmp_query.git"
-            developerConnection = "scm:git:ssh://git@github.com/abappi19/kmp_query.git"
+            url = "https://github.com/abappi19/kmp-query/"
+            connection = "scm:git:git://github.com/abappi19/kmp-query.git"
+            developerConnection = "scm:git:ssh://git@github.com/abappi19/kmp-query.git"
         }
     }
 }

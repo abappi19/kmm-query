@@ -1,4 +1,4 @@
-package io.github.abappi19.kmp_query.core
+package io.github.abappi19.kmpQuery.core
 
 /**
  * Defines caching strategies for network operations.

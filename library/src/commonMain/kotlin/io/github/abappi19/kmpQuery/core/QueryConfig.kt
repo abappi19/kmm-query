@@ -1,6 +1,6 @@
-package io.github.abappi19.kmp_query.core
+package io.github.abappi19.kmpQuery.core
 
-import io.github.abappi19.kmp_query.cache.QueryPersistor
+import io.github.abappi19.kmpQuery.cache.QueryPersistor
 import kotlinx.coroutines.CoroutineScope
 
 /**

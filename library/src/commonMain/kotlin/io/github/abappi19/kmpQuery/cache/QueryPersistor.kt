@@ -1,4 +1,4 @@
-package io.github.abappi19.kmp_query.cache
+package io.github.abappi19.kmpQuery.cache
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
