@@ -2,7 +2,7 @@ package io.github.abappi19.kmp_query.core
 
 import io.github.abappi19.kmp_query.cache.getObject
 import io.github.abappi19.kmp_query.cache.setObject
-import io.github.abappi19.kmp_query.utils.md5Hash
+import io.github.abappi19.kmp_query.io.github.abappi19.kmp_query.utils.md5Hash
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay

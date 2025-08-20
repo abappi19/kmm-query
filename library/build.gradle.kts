@@ -88,7 +88,7 @@ android {
 mavenPublishing {
     publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
 
-    signAllPublications()
+//    signAllPublications()
 
     coordinates(group.toString(), "kmp_query", version.toString())
 
