@@ -3,22 +3,19 @@ package io.github.abappi19.kmp_query
 import io.github.abappi19.kmp_query.core.CacheMode
 import io.github.abappi19.kmp_query.core.QueryClient
 import io.github.abappi19.kmp_query.core.useQuery
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.time.Duration.Companion.milliseconds
 
 
-class NetworkFirstModeTest {
+class CacheOnlyModeTest {
 
     val client = QueryClient()
 
-
     @Test
-    fun `NETWORK_FIRST - initial load`() = runTest {
+    fun `CACHE_ONLY - initial load`() = runTest {
 
         val query = client.useQuery(
             key = listOf("test"),
@@ -26,8 +23,9 @@ class NetworkFirstModeTest {
                 
                 "Hello World"
             },
-            cacheMode = CacheMode.NETWORK_FIRST
+            cacheMode = CacheMode.CACHE_ONLY
         )
+
 
         val result = query.data.first{ it != null }
 
@@ -47,8 +45,9 @@ class NetworkFirstModeTest {
 
     }
 
+
     @Test
-    fun `NETWORK_FIRST - refresh`() = runTest {
+    fun `CACHE_ONLY - refresh`() = runTest {
         var isFirst = MutableStateFlow(true)
         val query = client.useQuery(
             key = listOf("test"),
@@ -59,18 +58,10 @@ class NetworkFirstModeTest {
                 isFirst.value = false
                 "Hello World"
             },
-            cacheMode = CacheMode.NETWORK_FIRST
+            cacheMode = CacheMode.CACHE_ONLY
         )
 
         query.data.first{ it != null }
-
-        query.refresh()
-
-
-        query.isRefreshing.first{ !it }
-        query.data.first { it != "Hello World" }
-
-        assertEquals("Hello World 2", query.data.value)
 
         assertEquals(
             "query.isLoading.value==false",
@@ -81,20 +72,27 @@ class NetworkFirstModeTest {
             if (query.isRefreshing.value) "query.isRefreshing.value==true" else "query.isRefreshing.value==false"
         )
 
+        query.refresh()
+
+        query.isRefreshing.first{ !it }
+
+        assertEquals("Hello World", query.data.value)
+
     }
 
     @Test
-    fun `NETWORK_FIRST - offline`() = runTest {
+    fun `CACHE_ONLY - offline`() = runTest {
+        var isFirst = MutableStateFlow(true)
         val query = client.useQuery(
             key = listOf("test"),
             fetcher = fetcher@{
                 throw Exception("No Internet")
             },
-            cacheMode = CacheMode.NETWORK_FIRST
+            cacheMode = CacheMode.CACHE_ONLY
         )
 
         query.isRefreshing.first { !it }
-        query.isLoading.first{!it}
+        query.isLoading.first { !it }
 
         assertEquals(
             "query.isLoading.value==false",
@@ -117,7 +115,7 @@ class NetworkFirstModeTest {
     }
 
     @Test
-    fun `NETWORK_FIRST - unstableNetwork`() = runTest {
+    fun `CACHE_ONLY - unstableNetwork`() = runTest {
         var isFirst = MutableStateFlow(true)
         val query = client.useQuery(
             key = listOf("test"),
@@ -129,11 +127,11 @@ class NetworkFirstModeTest {
                 }
                 throw Exception("No Internet")
             },
-            cacheMode = CacheMode.NETWORK_FIRST
+            cacheMode = CacheMode.CACHE_ONLY
         )
 
         query.isRefreshing.first { !it }
-        query.isLoading.first{!it}
+        query.isLoading.first { !it }
 
         assertEquals(
             "query.isLoading.value==false",
@@ -147,8 +145,6 @@ class NetworkFirstModeTest {
         assertEquals("Hello World", query.data.value)
 
         query.refresh()
-        
-
         query.isRefreshing.first { !it }
 
         assertEquals("Hello World", query.data.value)
@@ -164,6 +160,5 @@ class NetworkFirstModeTest {
         )
 
     }
-
-
+    
 }
