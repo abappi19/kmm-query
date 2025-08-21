@@ -48,7 +48,7 @@ interface ComposableQuery<T> {
 
 
 @Composable
-inline fun <reified T : @Serializable Any> QueryClient.rememberCreateQuery(
+inline fun <reified T : @Serializable Any> QueryClient.rememberQuery(
     key: List<Any?>,
     crossinline fetcher: suspend () -> T,
     cacheTimeMillis: Long = queryManagerConfig.cacheTimeMillis ?: 0,
