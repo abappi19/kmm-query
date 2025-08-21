@@ -24,6 +24,7 @@ data class QueryConfig<T>(
     val fetcher: suspend () -> T,
     val scope: CoroutineScope,
     val cacheMode: CacheMode?,
+    val refetchOnLaunch: Boolean?,
     val cacheTimeMillis: Long?,
     val staleTimeMillis: Long?,
     val retryCount: Int?,
@@ -42,6 +43,7 @@ data class QueryConfig<T>(
 data class QueryManagerConfig(
     val cacheTimeMillis: Long?,
     val staleTimeMillis: Long?,
+    val refetchOnLaunch: Boolean? = false,
     val retryCount: Int? = 0,
     val cacheMode: CacheMode? = CacheMode.CACHE_FIRST,
     val persistor: QueryPersistor? = null,

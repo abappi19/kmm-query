@@ -7,7 +7,6 @@ import androidx.compose.runtime.remember
 import io.github.abappi19.kmpQuery.core.CacheMode
 import io.github.abappi19.kmpQuery.core.QueryClient
 import io.github.abappi19.kmpQuery.core.createQuery
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.serialization.Serializable
 
 /**
@@ -19,7 +18,7 @@ interface ComposableQuery<T> {
     /**
      * Force a refresh of the data, bypassing any caching logic
      */
-    fun refresh(): Unit
+    fun refetch(): Unit
 
     /**
      * Mark the data as stale and trigger a background refresh
@@ -44,7 +43,7 @@ interface ComposableQuery<T> {
     /**
      * Refreshing state indicator (true during manual refreshes)
      */
-    val isRefreshing: Boolean
+    val isFetching: Boolean
 }
 
 
@@ -54,17 +53,19 @@ inline fun <reified T : @Serializable Any> QueryClient.rememberCreateQuery(
     crossinline fetcher: suspend () -> T,
     cacheTimeMillis: Long = queryManagerConfig.cacheTimeMillis ?: 0,
     staleTimeMillis: Long = queryManagerConfig.staleTimeMillis ?: 0,
+    refetchOnLaunch: Boolean = queryManagerConfig.refetchOnLaunch ?: true,
     retryCount: Int = queryManagerConfig.retryCount ?: 0,
     cacheMode: CacheMode = queryManagerConfig.cacheMode ?: CacheMode.CACHE_FIRST,
     enabled: Boolean = true,
 
     ): ComposableQuery<T> {
-    val query = remember(this) {
+    val query = remember(this, key) {
         this.createQuery(
             key,
             fetcher,
             cacheTimeMillis,
             staleTimeMillis,
+            refetchOnLaunch,
             retryCount,
             cacheMode,
             enabled
@@ -74,7 +75,7 @@ inline fun <reified T : @Serializable Any> QueryClient.rememberCreateQuery(
     val data by query.data.collectAsState(initial = null)
     val error by query.error.collectAsState(initial = null)
 
-    val isRefreshing by query.isRefreshing.collectAsState(initial = false)
+    val isFetching by query.isFetching.collectAsState(initial = false)
     val isLoading by query.isLoading.collectAsState(initial = false)
 
 
@@ -83,7 +84,7 @@ inline fun <reified T : @Serializable Any> QueryClient.rememberCreateQuery(
 
 
     return object : ComposableQuery<T> {
-        override fun refresh() = query.refresh()
+        override fun refetch() = query.refetch()
 
         override fun invalidate() = query.invalidate()
 
@@ -93,8 +94,8 @@ inline fun <reified T : @Serializable Any> QueryClient.rememberCreateQuery(
             get() = error
         override val isLoading: Boolean
             get() = isLoading
-        override val isRefreshing: Boolean
-            get() = isRefreshing
+        override val isFetching: Boolean
+            get() = isFetching
 
     }
 

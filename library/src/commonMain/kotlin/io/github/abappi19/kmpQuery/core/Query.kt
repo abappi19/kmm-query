@@ -2,7 +2,7 @@ package io.github.abappi19.kmpQuery.core
 
 import io.github.abappi19.kmpQuery.cache.getObject
 import io.github.abappi19.kmpQuery.cache.setObject
-import io.github.abappi19.kmpQuery.io.github.abappi19.kmp_query.utils.md5Hash
+import io.github.abappi19.kmpQuery.utils.md5Hash
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -18,14 +18,14 @@ import kotlin.time.times
 
 /**
  * Defines a reactive query interface for managing asynchronous data fetching with caching strategies.
- * 
+ *
  * @param T The type of data being queried, must be serializable for caching
  */
 interface Query<T> {
     /**
      * Force a refresh of the data, bypassing any caching logic
      */
-    fun refresh(): Unit
+    fun refetch(): Unit
 
     /**
      * Mark the data as stale and trigger a background refresh
@@ -50,12 +50,12 @@ interface Query<T> {
     /**
      * Refreshing state indicator (true during manual refreshes)
      */
-    val isRefreshing: StateFlow<Boolean>
+    val isFetching: StateFlow<Boolean>
 }
 
 /**
  * Creates a managed query instance with caching and retry logic.
- * 
+ *
  * @param key Unique identifier for the query (used for caching)
  * @param fetcher Async function to fetch fresh data
  * @param cacheTimeMillis Duration to keep data in cache (0 = no caching)
@@ -63,7 +63,7 @@ interface Query<T> {
  * @param retryCount Number of automatic retry attempts on failure
  * @param cacheMode Strategy for cache/network interaction
  * @param enabled Control whether the query enabled or not
- * 
+ *
  * @return Configured Query instance managing the data lifecycle
  */
 @OptIn(ExperimentalTime::class)
@@ -72,6 +72,7 @@ inline fun <reified T : @Serializable Any> QueryClient.createQuery(
     crossinline fetcher: suspend () -> T,
     cacheTimeMillis: Long = queryManagerConfig.cacheTimeMillis ?: 0,
     staleTimeMillis: Long = queryManagerConfig.staleTimeMillis ?: 0,
+    refetchOnLaunch: Boolean = queryManagerConfig.refetchOnLaunch ?: true,
     retryCount: Int = queryManagerConfig.retryCount ?: 0,
     cacheMode: CacheMode = queryManagerConfig.cacheMode ?: CacheMode.CACHE_FIRST,
     enabled: Boolean = true,
@@ -92,7 +93,7 @@ inline fun <reified T : @Serializable Any> QueryClient.createQuery(
             )
 
     val isLoading = MutableStateFlow(false)
-    val isRefreshing = MutableStateFlow(false)
+    val isFetching = MutableStateFlow(false)
 
     val data = MutableStateFlow(
         if (isCacheValid) {
@@ -106,19 +107,19 @@ inline fun <reified T : @Serializable Any> QueryClient.createQuery(
 
     val resetLoadingState = {
         isLoading.value = false
-        isRefreshing.value = false
+        isFetching.value = false
     }
 
 
-    val refresh = refresh@{
+    val refetch = refetch@{
         if (
             !enabled
-            || isRefreshing.value
-        ) return@refresh
+            || isFetching.value
+        ) return@refetch
 
         CoroutineScope(Dispatchers.Default).launch {
             try {
-                isRefreshing.value = true
+                isFetching.value = true
                 val currentTimeMillis = Clock.System.now().toEpochMilliseconds()
 
                 val isDataFresh =
@@ -197,25 +198,25 @@ inline fun <reified T : @Serializable Any> QueryClient.createQuery(
     }
 
     val invalidate = invalidate@{
-        if (enabled != true) return@invalidate
+        if (!enabled) return@invalidate
         data.value = null
-        refresh()
+        refetch()
     }
 
     // Fetch data initially
 
-    if (enabled == true) {
+    if (enabled && refetchOnLaunch) {
         isLoading.value = true
-        refresh()
+        refetch()
     }
 
     return object : Query<T> {
         override val data = data as StateFlow<T?>
-        override fun refresh() = refresh()
+        override fun refetch() = refetch()
         override fun invalidate() = invalidate()
         override val error = error
         override val isLoading = isLoading
-        override val isRefreshing = isRefreshing
+        override val isFetching = isFetching
     }
 }
 

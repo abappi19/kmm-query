@@ -1,4 +1,4 @@
-package io.github.abappi19.kmpQuery.io.github.abappi19.kmp_query.utils
+package io.github.abappi19.kmpQuery.utils
 
 import kotlinx.coroutines.delay
 import org.kotlincrypto.hash.md.MD5
@@ -23,6 +23,11 @@ suspend fun <T> retryOperation(
     throw lastError ?: IllegalStateException("retryOperation failed without exception")
 }
 
+/**
+* Generate MD5 hash of a string
+* @param input String to hash
+* @return MD5 hashed string of the input
+ */
 fun md5Hash(input: String): String {
     val md5 = MD5()
     val digest = md5.digest(input.encodeToByteArray())

@@ -39,7 +39,7 @@ class CacheOnlyModeTest {
         )
         assertEquals(
             "query.isRefreshing.value==false",
-            if (query.isRefreshing.value) "query.isRefreshing.value==true" else "query.isRefreshing.value==false"
+            if (query.isFetching.value) "query.isRefreshing.value==true" else "query.isRefreshing.value==false"
         )
 
 
@@ -69,12 +69,12 @@ class CacheOnlyModeTest {
         )
         assertEquals(
             "query.isRefreshing.value==false",
-            if (query.isRefreshing.value) "query.isRefreshing.value==true" else "query.isRefreshing.value==false"
+            if (query.isFetching.value) "query.isRefreshing.value==true" else "query.isRefreshing.value==false"
         )
 
-        query.refresh()
+        query.refetch()
 
-        query.isRefreshing.first{ !it }
+        query.isFetching.first{ !it }
 
         assertEquals("Hello World", query.data.value)
 
@@ -91,7 +91,7 @@ class CacheOnlyModeTest {
             cacheMode = CacheMode.CACHE_ONLY
         )
 
-        query.isRefreshing.first { !it }
+        query.isFetching.first { !it }
         query.isLoading.first { !it }
 
         assertEquals(
@@ -100,7 +100,7 @@ class CacheOnlyModeTest {
         )
         assertEquals(
             "query.isRefreshing.value==false",
-            if (query.isRefreshing.value) "query.isRefreshing.value==true" else "query.isRefreshing.value==false"
+            if (query.isFetching.value) "query.isRefreshing.value==true" else "query.isRefreshing.value==false"
         )
         assertEquals(
             "query.data.value==null",
@@ -130,7 +130,7 @@ class CacheOnlyModeTest {
             cacheMode = CacheMode.CACHE_ONLY
         )
 
-        query.isRefreshing.first { !it }
+        query.isFetching.first { !it }
         query.isLoading.first { !it }
 
         assertEquals(
@@ -139,13 +139,13 @@ class CacheOnlyModeTest {
         )
         assertEquals(
             "query.isRefreshing.value==false",
-            if (query.isRefreshing.value) "query.isRefreshing.value==true" else "query.isRefreshing.value==false"
+            if (query.isFetching.value) "query.isRefreshing.value==true" else "query.isRefreshing.value==false"
         )
 
         assertEquals("Hello World", query.data.value)
 
-        query.refresh()
-        query.isRefreshing.first { !it }
+        query.refetch()
+        query.isFetching.first { !it }
 
         assertEquals("Hello World", query.data.value)
 
